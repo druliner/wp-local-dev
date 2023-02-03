@@ -1,0 +1,60 @@
+{
+    "name": "johnpbloch/wordpress",
+    "description": "WordPress is web software you can use to create a beautiful website or blog.",
+    "keywords": [
+      "wordpress",
+      "blog",
+      "cms"
+    ],
+    "type": "package",
+    "homepage": "http://wordpress.org/",
+    "license": "GPL-2.0+",
+    "authors": [
+      {
+        "name": "WordPress Community",
+        "homepage": "http://wordpress.org/about/"
+      }
+    ],
+    "support": {
+      "issues": "http://core.trac.wordpress.org/",
+      "forum": "http://wordpress.org/support/",
+      "wiki": "http://codex.wordpress.org/",
+      "irc": "irc://irc.freenode.net/wordpress",
+      "source": "http://core.trac.wordpress.org/browser"
+    },
+    "require": {
+      "php": ">=5.6.2",
+      "johnpbloch/wordpress-core-installer": "^2.0",
+      "johnpbloch/wordpress-core": "6.1.1",
+      "afragen/github-updater": "^4.6",
+      "uweb/uw_wp_theme": "^2",
+      "composer/installers": "^1"
+    },
+    "extra": {
+      "installer-paths": {
+        "wordpress/wp-content/plugins/{$name}/": ["type:wordpress-plugin"],
+        "wordpress/wp-content/themes/{$name}/": ["type:wordpress-theme"]
+      }
+    },
+    "config": {
+        "allow-plugins": {
+            "johnpbloch/wordpress-core-installer": true,
+            "composer/installers": true
+        }
+    },
+    "repositories": [
+      {
+        "type": "package",
+        "package": {
+          "name": "uweb/uw_wp_theme",
+          "version": "2.1.1",
+          "type": "wordpress-theme",
+          "source": {
+            "url": "https://github.com/uweb/uw_wp_theme.git",
+            "type": "git",
+            "reference": "master"
+          }
+        }
+      }
+    ]
+}

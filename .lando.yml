@@ -1,0 +1,46 @@
+name: wp
+recipe: wordpress
+config:
+  env: dev
+  xdebug: true
+  php: '8.1'
+  webroot: wordpress
+proxy:
+  mailhog:
+    - mail.wp.lndo.site
+  pma:
+    - pma.wp.lndo.site
+services:
+  appserver:
+    composer:
+      phpunit/phpunit: '*'
+    build:
+      - echo ========================================
+      - echo BUILD
+      - echo The LANDO_MOUNT is $LANDO_MOUNT 
+      - cd $LANDO_MOUNT && mkdir -p wordpress
+      - cd $LANDO_MOUNT && composer update --prefer-source
+    run:
+      - echo ========================================
+      - echo RUN
+      - cd $LANDO_MOUNT && wp config create --dbname=wordpress --dbuser=wordpress --dbpass=wordpress --dbhost=database --path=wordpress
+      - echo 'wp config run'
+      - wp core install --url=https://wp.lndo.site/ --title="wp local" --admin_user=admin --admin_password=password --admin_email=admin@wp.lndo.site --path=wordpress
+      - wp theme activate uw_wp_theme --path=wordpress
+      
+  mailhog:
+    type: mailhog
+    hogfrom:
+      - appserver
+    portforward: true
+  pma:
+    type: phpmyadmin
+    hosts:
+      - database
+      - database.wp.internal
+events:
+  # lots of events at: https://docs.lando.dev/core/v3/events.html
+  post-start:
+      - echo ========================================
+      - echo POST-START
+      # - lando wp plugin install wordpress-importer --activate
